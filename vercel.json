@@ -1,0 +1,13 @@
+{
+    "functions": {
+        "api/scrape.js": {
+        "runtime": "edge"
+        }
+    },
+    "cron": [
+        {
+        "path": "/api/scrape",
+        "schedule": "0 * * * *"
+        }
+    ]
+}
