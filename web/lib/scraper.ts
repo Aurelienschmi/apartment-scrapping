@@ -8,7 +8,13 @@ const PASSWORD_MOTEUR_IMMO = process.env.MOTEUR_IMMO_PASSWORD;
 export async function scrapeLinksLilleImmo(url: string, linkSelector: string) {
   const browser = await puppeteer.launch({
     headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--disable-gpu',
+    ],
   });
   const page = await browser.newPage();
 
@@ -31,7 +37,13 @@ export async function scrapeLinksLilleImmo(url: string, linkSelector: string) {
 export async function scrapeDynamicContentLilleImmo(url: string) {
   const browser = await puppeteer.launch({
     headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--disable-gpu',
+    ],
   });
   const page = await browser.newPage();
 
@@ -87,7 +99,13 @@ export async function scrapeDynamicContentLilleImmo(url: string) {
 export async function scrapeContentsMoteurImmo(url: string) {
   const browser = await puppeteer.launch({
     headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--disable-gpu',
+    ],
     protocolTimeout: 1800000 // Augmenter le délai d'attente à 1800000 ms (30 minutes)
   });
   const page = await browser.newPage();
