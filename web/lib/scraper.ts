@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer-extra';
-import { getUrls } from '../app/api/apartment/route';
+import { getUrls } from './utils';
+
 
 const EMAIL_MOTEUR_IMMO = process.env.MOTEUR_IMMO_EMAIL;
 const PASSWORD_MOTEUR_IMMO = process.env.MOTEUR_IMMO_PASSWORD;
@@ -166,10 +167,10 @@ export async function scrapeContentsMoteurImmo(url: string) {
     let previousHeight = 0;
     console.log('Scraping annonces avant...');
 
-    while (annoncesData.length < 50) {
+    while (annoncesData.length < 10) {
       const annonceElements = document.querySelectorAll('.column.is-half');
       for (const annonce of annonceElements) {
-        if (annoncesData.length >= 50) break;
+        if (annoncesData.length >= 10) break;
 
         const urlElement = annonce.querySelector('a.property-top-title');
         const url = urlElement?.getAttribute('href') ?? null;
