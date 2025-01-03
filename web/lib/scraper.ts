@@ -1,5 +1,7 @@
 import puppeteer from 'puppeteer-extra';
 import { getUrls } from './utils';
+import chromium from '@sparticuz/chromium';
+
 
 
 const EMAIL_MOTEUR_IMMO = process.env.MOTEUR_IMMO_EMAIL;
@@ -7,14 +9,9 @@ const PASSWORD_MOTEUR_IMMO = process.env.MOTEUR_IMMO_PASSWORD;
 
 export async function scrapeLinksLilleImmo(url: string, linkSelector: string) {
   const browser = await puppeteer.launch({
-    headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-accelerated-2d-canvas',
-      '--disable-gpu',
-    ],
+    executablePath: await chromium.executablePath(),
+    args: chromium.args,
+    headless: chromium.headless,
   });
   const page = await browser.newPage();
 
@@ -36,14 +33,9 @@ export async function scrapeLinksLilleImmo(url: string, linkSelector: string) {
 
 export async function scrapeDynamicContentLilleImmo(url: string) {
   const browser = await puppeteer.launch({
-    headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-accelerated-2d-canvas',
-      '--disable-gpu',
-    ],
+    executablePath: await chromium.executablePath(),
+    args: chromium.args,
+    headless: chromium.headless,
   });
   const page = await browser.newPage();
 
@@ -98,16 +90,13 @@ export async function scrapeDynamicContentLilleImmo(url: string) {
 // scraping de moteurimmo
 export async function scrapeContentsMoteurImmo(url: string) {
   const browser = await puppeteer.launch({
-    headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-accelerated-2d-canvas',
-      '--disable-gpu',
-    ],
+    executablePath: await chromium.executablePath(),
+    args: chromium.args,
+    headless: chromium.headless,
     protocolTimeout: 1800000 // Augmenter le délai d'attente à 1800000 ms (30 minutes)
+
   });
+
   const page = await browser.newPage();
 
   // Ajouter un en-tête HTTP
