@@ -4,7 +4,7 @@ import styles from '../styles/Footer.module.scss';
 const Footer: React.FC = () => {
     return (
         <footer className={styles.footer}>
-            <p>Contacté moi:</p>
+            <p>Contactez moi:</p>
             <a href="www.linkedin.com/in/aurelien-schmieder-0017391ab" target="_blank" rel="noopener noreferrer">
                 LinkedIn
             </a>
