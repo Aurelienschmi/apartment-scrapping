@@ -54,7 +54,8 @@ export async function scrapeDynamicContentLilleImmo(url: string) {
     const priceText = cleanText(document.querySelector("span.prix_item.pb-2")?.textContent || "").split('€')[0].trim();
     const price = parseFloat(priceText.replace(/\s/g, '').replace(',', '.'));
     const publication_date = new Date().toISOString();
-    const location = cleanText(document.querySelector("span.text_location_item.flex.items-center.justify-start")?.textContent || "");
+    const l = cleanText(document.querySelector("span.text_location_item.flex.items-center.justify-start")?.textContent || "");
+    const location = l.split(' ')[0].trim();
     const description = cleanText(document.querySelector("div.text__content.js_display_text_content")?.textContent || "");
     
     // Récupérer le nombre de pièces
@@ -174,10 +175,10 @@ export async function scrapeContentsMoteurImmo(url: string) {
     let previousHeight = 0;
     console.log('Scraping annonces avant...');
 
-    while (annoncesData.length < 10) {
+    while (annoncesData.length < 5) {
       const annonceElements = document.querySelectorAll('.column.is-half');
       for (const annonce of annonceElements) {
-        if (annoncesData.length >= 10) break;
+        if (annoncesData.length >= 5) break;
 
         const urlElement = annonce.querySelector('a.property-top-title');
         const url = urlElement?.getAttribute('href') ?? null;
@@ -201,9 +202,9 @@ export async function scrapeContentsMoteurImmo(url: string) {
 
         const title = titleElement?.textContent?.trim() ?? null;
         const p = priceElement?.parentElement?.innerText.split('\n')[1]?.trim() ?? null;
-        const price = p?.split('€')[0]?.replace(/\s/g, '').replace(',', '.') ?? null; // Remove spaces and replace comma with dot
+        const price = p?.split('€')[0]?.replace(/\s/g, '').replace(',', '.') ?? null;
         const publicated = publicatedElement?.textContent?.trim() ?? null;
-        const location = locationElement?.textContent?.trim() ?? null;
+        const location = locationElement?.textContent?.trim().split(' ')[0] ?? null;
         const description = descriptionElement?.textContent?.trim() ?? null;
         const s = surfaceElement?.textContent?.trim() ?? null;
         const surface_area = s?.split(' ')[0]?.trim() ?? null;
