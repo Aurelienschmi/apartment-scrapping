@@ -19,14 +19,22 @@ interface Apartment {
   has_balcony: boolean;
 }
 
+interface AdditionalFilters {
+  is_shared: string;
+  has_garage: string;
+  is_furnished: string;
+  has_balcony: string;
+}
+
 interface ApartmentListProps {
   data: Apartment[];
   sortType: string;
   priceRange: { min: number; max: number } | null;
   selectedLocations: string[];
+  additionalFilters: AdditionalFilters;
 }
 
-const ApartmentList: React.FC<ApartmentListProps> = ({ data, sortType, priceRange, selectedLocations }) => {
+const ApartmentList: React.FC<ApartmentListProps> = ({ data, sortType, priceRange, selectedLocations, additionalFilters }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
@@ -60,9 +68,20 @@ const ApartmentList: React.FC<ApartmentListProps> = ({ data, sortType, priceRang
     return data.filter(apartment => selectedLocations.includes(apartment.location));
   };
 
+  const filterDataByAdditionalFilters = (data: Apartment[]) => {
+    return data.filter(apartment => {
+      const matchesShared = additionalFilters.is_shared === '' || (additionalFilters.is_shared === 'OUI' ? apartment.is_shared : !apartment.is_shared);
+      const matchesGarage = additionalFilters.has_garage === '' || (additionalFilters.has_garage === 'OUI' ? apartment.has_garage : !apartment.has_garage);
+      const matchesFurnished = additionalFilters.is_furnished === '' || (additionalFilters.is_furnished === 'OUI' ? apartment.is_furnished : !apartment.is_furnished);
+      const matchesBalcony = additionalFilters.has_balcony === '' || (additionalFilters.has_balcony === 'OUI' ? apartment.has_balcony : !apartment.has_balcony);
+      return matchesShared && matchesGarage && matchesFurnished && matchesBalcony;
+    });
+  };
+
   const sortedData = sortData(data);
   const filteredDataByPrice = filterDataByPrice(sortedData);
-  const filteredData = filterDataByLocation(filteredDataByPrice);
+  const filteredDataByLocation = filterDataByLocation(filteredDataByPrice);
+  const filteredData = filterDataByAdditionalFilters(filteredDataByLocation);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
