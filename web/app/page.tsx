@@ -4,6 +4,7 @@ import Header from './components/Header';
 import ApartmentList from './components/ApartmentList';
 import Footer from './components/Footer';
 import Filters from './components/Filters';
+import Loader from './components/LoadingPage';
 import { useApartments } from './hooks/useApartments';
 import styles from './styles/Page.module.scss';
 
@@ -15,7 +16,7 @@ interface AdditionalFilters {
 }
 
 const Page: React.FC = () => {
-  const { data } = useApartments();
+  const { data, loading } = useApartments();
   const [sortType, setSortType] = useState('recent');
   const [priceRange, setPriceRange] = useState<{ min: number; max: number } | null>(null);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
@@ -45,22 +46,28 @@ const Page: React.FC = () => {
   return (
     <div className={styles.container}>
       <Header />
-      <Filters
-        sortType={sortType}
-        setSortType={setSortType}
-        setPriceRange={handleSetPriceRange}
-        locations={uniqueLocations}
-        setSelectedLocations={setSelectedLocations}
-        totalItems={filteredData.length}
-        setAdditionalFilters={setAdditionalFilters}
-      />
-      <ApartmentList
-        data={filteredData}
-        sortType={sortType}
-        priceRange={priceRange}
-        selectedLocations={selectedLocations}
-        additionalFilters={additionalFilters}
-      />
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <Filters
+            sortType={sortType}
+            setSortType={setSortType}
+            setPriceRange={handleSetPriceRange}
+            locations={uniqueLocations}
+            setSelectedLocations={setSelectedLocations}
+            totalItems={filteredData.length}
+            setAdditionalFilters={setAdditionalFilters}
+          />
+          <ApartmentList
+            data={filteredData}
+            sortType={sortType}
+            priceRange={priceRange}
+            selectedLocations={selectedLocations}
+            additionalFilters={additionalFilters}
+          />
+        </>
+      )}
       <Footer />
     </div>
   );
