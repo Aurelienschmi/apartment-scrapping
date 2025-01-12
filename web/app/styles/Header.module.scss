@@ -1,4 +1,3 @@
-
 .headerContainer {
   display: flex;
   justify-content: space-between;
@@ -8,7 +7,6 @@
 }
 
 .logo {
-  
   border-radius: 10%;
 }
 
@@ -16,6 +14,7 @@
   margin-left: auto;
   display: flex;
   gap: 1rem;
+  position: relative;
 }
 
 .button {
@@ -27,5 +26,45 @@
   cursor: pointer;
   &:hover {
     background-color: #84bde4;
+  }
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownItem {
+  display: block;
+  padding: 1rem;
+  text-align: left;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: #fff;
+  border:none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: medium;
+
+  &:hover {
+    background-color: #eef5f8;
+  }
+
+  & + .dropdownItem {
+    border-top: 1px solid #3498db;
   }
 }

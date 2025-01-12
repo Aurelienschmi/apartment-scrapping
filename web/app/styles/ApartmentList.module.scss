@@ -15,6 +15,20 @@
   overflow: hidden;
   transition: transform 0.2s, box-shadow 0.2s;
 }
+.likeButton {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 10px;
+
+  &:hover {
+    background-color: #2980b9;
+  }
+}
 
 .title {
   font-size: 1.2rem;

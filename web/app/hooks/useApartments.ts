@@ -15,6 +15,7 @@ interface Apartment {
     has_garage: boolean;
     is_furnished: boolean;
     has_balcony: boolean;
+    is_liked: boolean;
   }
 
 export const useApartments = () => {
