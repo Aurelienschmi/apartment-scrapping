@@ -46,6 +46,7 @@ const Page: React.FC = () => {
     has_balcony: ''
   });
   const router = useRouter();
+  const userId = '';
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -109,6 +110,7 @@ const Page: React.FC = () => {
             priceRange={priceRange}
             selectedLocations={selectedLocations}
             additionalFilters={additionalFilters}
+            userId={userId}
           />
         </>
       )}
