@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/ApartmentList.module.scss";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
@@ -34,6 +34,7 @@ interface ApartmentListProps {
   priceRange: { min: number; max: number } | null;
   selectedLocations: string[];
   additionalFilters: AdditionalFilters;
+  userId: string;
 }
 
 const ApartmentList: React.FC<ApartmentListProps> = ({
@@ -42,10 +43,32 @@ const ApartmentList: React.FC<ApartmentListProps> = ({
   priceRange,
   selectedLocations,
   additionalFilters,
+  userId,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [apartments, setApartments] = useState(data);
   const itemsPerPage = 9;
+
+  useEffect(() => {
+    fetchLikedApartments();
+  }, [userId]);
+
+  const fetchLikedApartments = async () => {
+    const res = await fetch(`/api/like?userId=${userId}`);
+
+    if (res.ok) {
+      const likedApartments = await res.json();
+      setApartments((prevApartments) =>
+        prevApartments.map((apartment) =>
+          likedApartments.includes(apartment.id)
+            ? { ...apartment, is_liked: true }
+            : apartment
+        )
+      );
+    } else {
+      console.error("Failed to fetch liked apartments");
+    }
+  };
 
   const handleLike = async (apartmentId: number) => {
     const res = await fetch("/api/like", {
@@ -229,7 +252,7 @@ const ApartmentList: React.FC<ApartmentListProps> = ({
               Balcon: {item.has_balcony ? "OUI" : "NON"}
             </p>
             <div className={styles.images}>
-              {item.images.map((image, index) => (
+              {item.images.length > 0 && item.images.map((image, index) => (
                 <Image
                   key={index}
                   src={image}
@@ -242,10 +265,12 @@ const ApartmentList: React.FC<ApartmentListProps> = ({
             <a href={item.url} className={styles.link}>
               Lien vers l&apos;annonce
             </a>
+              <div className={styles.likeButton}>
             <LikeButton
               isLiked={item.is_liked ?? false}
               onToggle={() => handleLike(item.id)}
             />
+            </div>
           </li>
         ))}
       </ul>

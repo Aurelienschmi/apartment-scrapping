@@ -4,6 +4,38 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
+export async function GET(req: NextRequest) {
+  try {
+    const token = req.cookies.get('token')?.value;
+
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
+    const userId = decoded.user_id;
+
+    if (!userId) {
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    }
+
+    const { data: likedApartments, error } = await supabase
+      .from('user_favorites')
+      .select('apartment_id')
+      .eq('user_id', userId);
+
+    if (error) {
+      console.error('Error fetching liked apartments:', error);
+      return NextResponse.json({ error: 'Failed to fetch liked apartments' }, { status: 500 });
+    }
+
+    const apartmentIds = likedApartments.map((fav) => fav.apartment_id);
+    return NextResponse.json(apartmentIds, { status: 200 });
+  } catch (error) {
+    console.error('Error handling request:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
 export async function POST(req: NextRequest) {
   try {
     const token = req.cookies.get('token')?.value;
@@ -14,7 +46,10 @@ export async function POST(req: NextRequest) {
 
     const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
     const userId = decoded.user_id;
-    console.log('User ID:', userId);    
+
+    if (!userId) {
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    }
 
     const { apartmentId } = await req.json();
 

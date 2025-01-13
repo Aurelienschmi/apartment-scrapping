@@ -1,33 +1,27 @@
-
 .container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 20px;
-  padding: 20px;
   list-style: none;
-
+  padding-top: 1rem;
 }
 
 .item {
+  position: relative; /* Ajoutez cette ligne pour permettre le positionnement absolu du bouton de like */
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s, box-shadow 0.2s;
 }
-.likeButton {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-top: 10px;
 
-  &:hover {
-    background-color: #2980b9;
-  }
+.likeButton {
+  position: absolute; /* Positionnement absolu */
+  top: 10px; /* Ajustez la position verticale */
+  left: 10px; /* Ajustez la position horizontale */
+
+  cursor: pointer;
+
 }
 
 .title {
@@ -37,6 +31,11 @@
   color: #333;
   text-align: center;
   height: 2rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  overflow: hidden; /* Masquer le texte qui dépasse */
+  text-overflow: ellipsis; /* Ajouter des points de suspension */
+  white-space: nowrap; /* Empêcher le texte de se dérouler sur plusieurs lignes */
 }
 
 .price {
@@ -85,7 +84,6 @@
   padding: 10px 16px;
   height: 20rem;
 
-
   img {
     border-radius: 4px;
     width: 100%;
@@ -117,7 +115,6 @@
   justify-content: center;
   margin-top: 20px;
   padding-bottom: 1rem;
-
 }
 
 .pagination button {
@@ -145,5 +142,4 @@
   .description {
     height: auto;
   }
-
 }
