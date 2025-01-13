@@ -70,10 +70,8 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function handler(req: NextRequest) {
-  if (req.method === 'POST') {
-    return POST(req);
-  } else {
-    return NextResponse.json({ error: `Method ${req.method} Not Allowed` }, { status: 405 });
-  }
-}
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
